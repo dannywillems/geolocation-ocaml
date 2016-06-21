@@ -1,0 +1,7 @@
+S app/ml/*.ml
+
+PKG js_of_ocaml
+PKG js_of_ocaml.ppx
+PKG cordova
+PKG jsoo_lib
+PKG cordova-plugin-geolocation
