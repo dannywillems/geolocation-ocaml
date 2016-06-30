@@ -9,10 +9,10 @@ TMP_OUT_BYTECODE			=	$(ML_DIRECTORY)/out.byte
 CC_CAML						=	ocamlc
 
 ifeq ($(SYNTAX_EXTENSION),camlp4)
-	BASIC_PACKAGE 	=	-package js_of_ocaml -package js_of_ocaml.syntax -package cordova-plugin-file
+	BASIC_PACKAGE 	=	-package js_of_ocaml -package js_of_ocaml.syntax -package cordova-plugin-file -package lwt.ppx
 	BASIC_SYNTAX	=	-syntax camlp4o
 else
-	BASIC_PACKAGE	=	-package js_of_ocaml -package js_of_ocaml.ppx -package cordova-plugin-file
+	BASIC_PACKAGE	=	-package js_of_ocaml -package js_of_ocaml.ppx -package cordova-plugin-file web.cma -package lwt.ppx
 endif
 
 ifeq ($(USE_GEN_JS_API) $(DEBUG),True True)
@@ -53,9 +53,9 @@ all: init_dir css js_of_ocaml $(PROD_DIRECTORY_LIST)
 ##### Compile bytecode to js
 js_of_ocaml:
 	mkdir -p $(ML_JS_DIRECTORY)
-	ocamlfind $(CC_CAML) -I $(ML_DIRECTORY) -o $(TMP_OUT_BYTECODE) \
+	ocamlfind $(CC_CAML)  web.cma -I $(ML_DIRECTORY) -o $(TMP_OUT_BYTECODE) \
 	$(BASIC_PACKAGE) $(CUSTOM_PACKAGE) $(BASIC_SYNTAX) $(CUSTOM_SYNTAX) \
-	-linkpkg $(ML_FILES) $(MLI_FILES)
+	-linkpkg  $(MLI_FILES) $(ML_FILES)
 	$(CC_JS)
 
 ##### MINIFY CSS
